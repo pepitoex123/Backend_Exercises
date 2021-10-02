@@ -7,10 +7,10 @@ class Usuario{
         if(typeof apellido === "string"){
             this.apellido = apellido;
         }
-        if(Array.isArray(libros) && libros.length > 0 && libros.every((item) => typeof item === "object")){
+        if(Array.isArray(libros) && libros.every((item) => typeof item === "object")){
             this.libros = libros;
         }
-        if(Array.isArray(mascotas) && mascotas.length > 0 && mascotas.every((item) => typeof item === "string")){
+        if(Array.isArray(mascotas) && mascotas.every((item) => typeof item === "string")){
             this.mascotas = mascotas;
         }
     }
