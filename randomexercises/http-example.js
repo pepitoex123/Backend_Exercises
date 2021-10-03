@@ -1,4 +1,4 @@
-const { get } = require("https");
+const { get } = require("randomexercises/https");
 
 get("https://www.google.com", (res) => {
     res.on("data", (chunk) => {
