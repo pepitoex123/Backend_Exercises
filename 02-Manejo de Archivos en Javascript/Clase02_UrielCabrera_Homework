@@ -1,8 +1,12 @@
 const fs = require("fs");
 
 class Contenedor {
-    async constructor(nombreArchivo) {
+    constructor(nombreArchivo) {
         this.nombreArchivo = nombreArchivo
+        this.id = 1;
+    }
+
+    async build(){
         if (JSON.parse(await this.getAll()).length > 0){
             this.id = (JSON.parse(await this.getAll()).length) + 1
         }else{
@@ -67,6 +71,7 @@ class Contenedor {
 }
 
 const db = new Contenedor("miArchivo");
+db.build();
 
 const test = async () => {
     console.log(await db.getAll())
