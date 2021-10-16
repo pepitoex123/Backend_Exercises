@@ -2,7 +2,7 @@ const Contenedor = require("./Contenedor");
 
 const db = new Contenedor("productos.txt");
 
-db.build();
+
 
 db.save({
     title: "Gatorade",

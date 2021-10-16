@@ -59,49 +59,7 @@ class Contenedor {
 
 }
 
+module.exports = Contenedor;
 
-const db = new Contenedor();
 
-const test = async () => {
-    console.log(await db.getAll());
-    console.log(await db.save({
-        title: "Pepsi",
-        price: 200,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.save({
-        title: "Coca-Cola",
-        price: 400,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.save({
-        title: "Pepsi",
-        price: 400,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.getById(1));
-    console.log(await db.deleteAll());
-    console.log(await db.save({
-        title: "Pepsi",
-        price: 200,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.save({
-        title: "Coca-Cola",
-        price: 400,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.save({
-        title: "Pepsi",
-        price: 400,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.save({
-        title: "Nuka-Cola",
-        price: 700,
-        thumbnail: "www.test.com"
-    }))
-    console.log(await db.deleteById(4));
-}
 
-test();
