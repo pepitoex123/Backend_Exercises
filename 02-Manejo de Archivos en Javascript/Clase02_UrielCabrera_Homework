@@ -1,12 +1,16 @@
 const fs = require("fs");
 
 class Contenedor {
-    constructor(nombreArchivo){
+    async constructor(nombreArchivo) {
         this.nombreArchivo = nombreArchivo
-        this.id = 1;
+        if (JSON.parse(await this.getAll()).length > 0){
+            this.id = (JSON.parse(await this.getAll()).length) + 1
+        }else{
+            this.id = 1;
+        }
     }
     async save(object){
-        const arrProducts = await this.getAll();
+        const arrProducts =  JSON.parse(await this.getAll());
         object = {
             ...object,
             id: this.id
@@ -43,7 +47,7 @@ class Contenedor {
 
     async deleteById(id){
         let arrProducts = await this.getAll();
-        arrProducts = arrProducts.filter((product) => product["id"] === id);
+        arrProducts = arrProducts.filter((product) => product["id"] !== id);
         try{
             await fs.promises.writeFile(this.nombreArchivo,JSON.stringify(arrProducts,null,2))
             return true;
