@@ -7,7 +7,7 @@ class Contenedor {
         this.id = 1;
     }
 
-    getAll = async () => {
+    async getAll() {
         try{
             const contenido = await fs.promises.readFile(this.ruta,"utf-8");
             return JSON.parse(contenido);
@@ -18,7 +18,7 @@ class Contenedor {
         }
     }
 
-    save = async(product) => {
+    async save(product) {
         const arrProductos = await this.getAll();
         product["id"] = this.id;
         ++this.id;
@@ -31,7 +31,7 @@ class Contenedor {
         }
     }
 
-    getById = async id => {
+    async getById(id) {
         const arrProductos = await this.getAll();
 
         const productoBuscado = arrProductos.find( p => p.id === id );
@@ -39,7 +39,7 @@ class Contenedor {
         return productoBuscado;
     }
 
-    deleteAll = async() => {
+    async deleteAll(){
         try{
             return await fs.promises.writeFile(this.ruta,JSON.stringify([],null,2));
         }catch(error){
@@ -47,7 +47,7 @@ class Contenedor {
         }
     }
 
-    deleteById = async(id) => {
+    async deleteById(id){
         let arrProductos = await this.getAll();
         arrProductos = arrProductos.filter((producto) => producto.id !== id)
         try{
