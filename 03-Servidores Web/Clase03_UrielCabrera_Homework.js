@@ -1,26 +1,32 @@
 const Contenedor = require("./Contenedor");
+const express = require("express");
 
 const db = new Contenedor("productos.txt");
 
+const app = express();
 
 
-db.save({
-    title: "Gatorade",
-    price: 100,
-    thumbnail: "https://www.test.com"
+app.use(express.json());
+
+
+app.get("/productos",async(req,res) => {
+    const arrProductos = await db.getAll();
+    res.status(200).json({
+        success: true,
+        data: arrProductos
+    })
 })
 
-db.save({
-    title: "Coca-Cola",
-    price: 250,
-    thumbnail: "https://www.cocacola.com"
+app.get("/producto-random", async(req,res) => {
+    const arrProductos = await db.getAll();
+    const productoRandom = arrProductos[Math.floor(Math.random() * ( (arrProductos.length - 1) - 0 + 1)) + 0];
+    res.status(200).json({
+        success: true,
+        data: productoRandom
+    })
 })
 
-db.save({
-    title: "Pepsi",
-    price: 300,
-    thumbnail: "https://www.pepsi.com"
-})
+
 
 
 
