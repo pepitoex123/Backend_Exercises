@@ -20,8 +20,8 @@ class Contenedor {
 
     async save(product) {
         const arrProductos = await this.getAll();
-        product["id"] = this.id;
-        ++this.id;
+        product.id = this.id;
+        this.id = this.id + 1;
         arrProductos.push(product);
         try{
             await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
@@ -60,7 +60,7 @@ class Contenedor {
 }
 
 
-const db = new Contenedor();
+const db = new Contenedor("productos.txt");
 
 const test = async () => {
     console.log(await db.getAll());
