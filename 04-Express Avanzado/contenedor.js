@@ -34,13 +34,19 @@ class Contenedor {
     async getById(id) {
         const arrProductos = await this.getAll();
 
-        const productoBuscado = arrProductos.find( p => p.id === id );
+        console.log("El array de productos es ", arrProductos)
+
+        const productoBuscado = arrProductos.find( p => p.id == id );
+
+        console.log("El producto buscado es ", productoBuscado)
 
         return productoBuscado;
     }
 
     async updateById(id,data){
+        id = Number(id);
         let producto = await this.getById(id);
+        console.log("Este es el producto: ",producto)
         await this.deleteById(id);
         const arrProductos = await this.getAll();
         producto = {
@@ -48,6 +54,7 @@ class Contenedor {
             ...data,
             id
         }
+        console.log("Este es el producto después de la actualización, ", producto);
         arrProductos.push(producto);
         try{
             await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
@@ -67,6 +74,7 @@ class Contenedor {
 
     async deleteById(id){
         let arrProductos = await this.getAll();
+        id = Number(id);
         arrProductos = arrProductos.filter((producto) => producto.id !== id)
         try{
             return await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2));

@@ -32,6 +32,7 @@ async function createProduct(req,res){
             error: "Please send POST data correctly"
         })
     }
+    console.log(req.body);
     const id = await contenedor.save(req.body);
     return res.status(200).json({
         success: true,
@@ -41,7 +42,7 @@ async function createProduct(req,res){
 
 async function updateProduct(req,res){
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
-    const productId = await contenedor.updateById(req.body.id,req.body.data);
+    const productId = await contenedor.updateById(req.params.id,req.body.data);
     if(!productId){
         return res.status(400).json({
             error: "No se pudo actualizar el producto"
