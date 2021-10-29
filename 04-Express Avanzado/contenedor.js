@@ -1,10 +1,11 @@
 const fs = require("fs");
+const uuid = require("uuid");
 
 
 class Contenedor {
     constructor(nombreArchivo){
         this.ruta = nombreArchivo;
-        this.id = 1;
+        this.id = uuid.v4();
     }
 
     async getAll() {
@@ -21,7 +22,7 @@ class Contenedor {
     async save(product) {
         const arrProductos = await this.getAll();
         product.id = this.id;
-        this.id = this.id + 1;
+        this.id = this.id + "1";
         arrProductos.push(product);
         try{
             await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
@@ -44,9 +45,9 @@ class Contenedor {
     }
 
     async updateById(id,data){
-        id = Number(id);
         let producto = await this.getById(id);
         console.log("Este es el producto: ",producto)
+        console.log("Este es el id", id)
         await this.deleteById(id);
         const arrProductos = await this.getAll();
         producto = {
@@ -74,7 +75,6 @@ class Contenedor {
 
     async deleteById(id){
         let arrProductos = await this.getAll();
-        id = Number(id);
         arrProductos = arrProductos.filter((producto) => producto.id !== id)
         try{
             return await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2));
