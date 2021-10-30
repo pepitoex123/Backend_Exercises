@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "title": "Pepsi",
+    "price": "1500",
+    "thumbnail": "www.123test.com",
+    "id": "28b9102b-17cf-4203-8c9b-be72be50d43f"
+  }
+]
