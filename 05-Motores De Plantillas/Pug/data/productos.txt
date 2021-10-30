@@ -1,3 +1,8 @@
 [
-
+  {
+    "title": "Coca-Cola",
+    "price": "1000",
+    "thumbnail": "www.test.com123",
+    "id": "3c8d3d60-cda8-4aa3-ba3a-3c6b8c4bbc2b"
+  }
 ]

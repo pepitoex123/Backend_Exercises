@@ -1,0 +1,16 @@
+extends layouts/layout.pug
+
+
+block content
+
+    <h1>Formulario para añadir producto!</h1>
+    <form method="post" action="/api/productos">
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title">
+    <label for="price">Price</label>
+    <input type="text" name="price" id="price">
+    <label for="thumbnail">Thumbnail</label>
+    <input type="text" name="thumbnail" id="thumbnail">
+    <input type="submit" value="Submit!">
+    </form>
+    <a href="./productos">Ve hacia la vista de productos!</a>

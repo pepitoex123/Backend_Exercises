@@ -1,0 +1,20 @@
+extends layouts/layout.pug
+
+block content
+    p The summary of the products can be seen below:
+    center
+        table(style='width:100%', border='1')
+            thead
+                tr
+                    th Title
+                    th Price
+                    th Thumbnail
+                    th ID
+            tbody
+                each producto in array
+                    tr
+                        td #{producto.title}
+                        td #{producto.price}
+                        td #{producto.thumbnail}
+                        td #{producto.id}
+    <a href="/">Ve hacia el formulario!</a>
