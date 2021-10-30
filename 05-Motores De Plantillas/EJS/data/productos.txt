@@ -1,3 +1,8 @@
 [
-
+  {
+    "title": "Pepsi",
+    "price": "19000",
+    "thumbnail": "www.test123.com",
+    "id": "2b50e35e-3301-464a-bb1d-04ba2efc2cef"
+  }
 ]
