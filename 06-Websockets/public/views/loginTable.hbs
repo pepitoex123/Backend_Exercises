@@ -9,29 +9,6 @@
     <input id="submit" type="submit" value="Submit!">
 </form>
 
-{{#if listExists}}
-    <table>
-        <thead>
-        <tr>
-            {{#each array.[0]}}
-                <th>{{@key}}</th>
-            {{/each}}
-        </tr>
-        </thead>
-        <tbody>
-        {{#each array}}
-            <tr>
-                {{#each this}}
-                    <td>{{this}}</td>
-                {{/each}}
-            </tr>
-        {{/each}}
-        </tbody>
-    </table>
-{{else}}
-    <h1>No hay información para mostrar!</h1>
-{{/if}}
-
 
 <table class="table">
     <thead>

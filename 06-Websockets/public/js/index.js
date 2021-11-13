@@ -22,20 +22,20 @@ socket.on("mi mensaje", data => {
 
 submit.addEventListener("click",(e) => {
     e.preventDefault();
-    if(!title.textContent || !price.textContent || !thumbnail.textContent){
+    if(!title.value || !price.value || !thumbnail.value){
         alert("Error!");
         return;
     }
-    socket.emit("producto",JSON.stringify({title: title.textContent,price: price.textContent,thumbnail: thumbnail.textContent}))
+    socket.emit("producto",JSON.stringify({title: title.value,price: price.value,thumbnail: thumbnail.value}))
 })
 
 submitMessages.addEventListener("click",(e) => {
     e.preventDefault();
-    if(!email.textContent){
+    if(!email.value){
         alert("Error!");
         return;
     }
-    socket.emit("mensaje", JSON.stringify({email: email.textContent, messageContent: messageContent.textContent, messageTime: moment().format("DD MM YYYY hh:mm:ss")  }))
+    socket.emit("mensaje", JSON.stringify({email: email.value, messageContent: messageContent.value, messageTime: moment().format("DD MM YYYY hh:mm:ss")  }))
 })
 
 socket.on("productos",(productos) => {

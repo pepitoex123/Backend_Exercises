@@ -64,14 +64,14 @@ io.on("connection",async(socket) => {
         const productoAGuardar = JSON.parse(producto);
         await contenedor.save(productoAGuardar);
         const productos = await contenedor.getAll();
-        io.sockets.emit("productos",JSON.stringify(productos));
+        io.sockets.emit("productos",productos);
     })
     socket.on("mensaje", async (mensaje) => {
         const contenedor = new Contenedor(path.join(__dirname,"data","mensajes.txt"));
         const mensajeAGuardar = JSON.parse(mensaje);
         await contenedor.save(mensajeAGuardar);
         const mensajes = await contenedor.getAll();
-        io.sockets.emit("productos",JSON.stringify(mensajes));
+        io.sockets.emit("mensajes",mensajes);
     })
 })
 
