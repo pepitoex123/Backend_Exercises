@@ -39,6 +39,14 @@ app.use("/api/carrito",cartRouter)
 
 app.use("/",viewsRouter)
 
+app.use("/*", (req,res,next) => {
+
+    res.status(400).json({
+        error: true
+    })
+    next()
+})
+
 
 // Variable Booleana Administrador
 
