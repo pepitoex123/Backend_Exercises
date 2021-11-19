@@ -12,7 +12,7 @@ router.route("/:id").delete(deleteCart)
 
 router.route("/:id/productos").get(getAllCartProducts).post(createCartProduct)
 
-router.route("/:id/:id_prod").delete(deleteCartProduct)
+router.route("/:id/productos/:id_prod").delete(deleteCartProduct)
 
 
 

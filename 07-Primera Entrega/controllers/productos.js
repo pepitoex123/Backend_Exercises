@@ -1,7 +1,18 @@
 const Contenedor = require("./../contenedor");
 const path = require("path");
 
+
+let administrador = true;
+
 async function getAllProducts(req,res){
+
+    if(!administrador){
+        return res.status(400).json({
+            success: false,
+            message: "You don't have permissions"
+        })
+    }
+
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
     const productos = await contenedor.getAll();
     return res.status(200).json({
@@ -11,6 +22,14 @@ async function getAllProducts(req,res){
 }
 
 async function getProduct(req,res){
+    if(!administrador){
+        return res.status(400).json({
+            success: false,
+            message: "You don't have permissions"
+        })
+    }
+
+
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
     const id = req.params.id;
     const producto = await contenedor.getById(id);
@@ -26,6 +45,14 @@ async function getProduct(req,res){
 }
 
 async function createProduct(req,res){
+
+    if(!administrador){
+        return res.status(400).json({
+            success: false,
+            message: "You don't have permissions"
+        })
+    }
+
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
     if(!req.body){
         return res.status(400).json({
@@ -41,11 +68,19 @@ async function createProduct(req,res){
 }
 
 async function updateProduct(req,res){
+
+    if(!administrador){
+        return res.status(400).json({
+            success: false,
+            message: "You don't have permissions"
+        })
+    }
+
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
-    const productId = await contenedor.updateById(req.params.id,req.body.data);
+    const productId = await contenedor.updateById(req.params.id,req.body);
     if(!productId){
         return res.status(400).json({
-            error: "No se pudo actualizar el producto"
+            error: "No se pudo actualizar el producto, porque no existe"
         })
     }
     return res.status(200).json({
@@ -55,6 +90,15 @@ async function updateProduct(req,res){
 }
 
 async function deleteProduct(req,res){
+
+    if(!administrador){
+        return res.status(400).json({
+            success: false,
+            message: "You don't have permissions"
+        })
+    }
+
+
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
     const productId = contenedor.deleteById(req.params.id);
     if(!productId){
