@@ -5,7 +5,7 @@ function createSchemaKnexSqlLite(knex){
     knex.schema.createTable("mensajes", table => {
         table.increments("id")
         table.string("email")
-        table.integer("price")
+        table.timestamps("message_timestamp");
         table.string("thumbnail")
     })
         .then(() => console.log("Table created!"))
