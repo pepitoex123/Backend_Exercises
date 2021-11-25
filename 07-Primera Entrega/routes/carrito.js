@@ -1,6 +1,6 @@
 const express = require("express");
 
-const {getAllCartProducts,deleteCart,deleteCartProduct,createCart,createCartProduct} = require("./../controllers/carrito")
+const {getAllCartProducts,deleteCart,deleteCartProduct,createCart,createCartProduct,getCart} = require("./../controllers/carrito")
 
 
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.route("/").post(createCart)
 
-router.route("/:id").delete(deleteCart)
+router.route("/:id").delete(deleteCart).get(getCart)
 
 router.route("/:id/productos").get(getAllCartProducts).post(createCartProduct)
 

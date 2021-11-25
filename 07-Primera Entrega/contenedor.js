@@ -20,6 +20,17 @@ class Contenedor {
         }
     }
 
+    async lookUpId(id) {
+        try{
+            let contenido = await fs.promises.readFile(this.ruta,"utf-8");
+            let items = JSON.parse(contenido);
+            let idFound = items.find((item) => item.id === id);
+            return idFound
+        }catch(error){
+            throw new Error("Something wrong happened!")
+        }
+    }
+
     async save(product) {
         const arrProductos = await this.getAll();
         product.id = this.id;
@@ -30,26 +41,26 @@ class Contenedor {
             await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
             return product.id;
         }catch(error){
-            return "No se pudo guardar el producto";
+            return "The product couldn't be saved";
         }
     }
 
     async getById(id) {
         const arrProductos = await this.getAll();
 
-        console.log("El array de productos es ", arrProductos)
+        console.log("The products array is: ", arrProductos)
 
         const productoBuscado = arrProductos.find( p => p.id == id );
 
-        console.log("El producto buscado es ", productoBuscado)
+        console.log("The looked up product is: ", productoBuscado)
 
         return productoBuscado;
     }
 
     async updateById(id,data){
         let producto = await this.getById(id);
-        console.log("Este es el producto: ",producto)
-        console.log("Este es el id", id)
+        console.log("This is the product: ",producto)
+        console.log("This is the id: ", id)
         await this.deleteById(id);
         const arrProductos = await this.getAll();
         producto = {
@@ -57,13 +68,13 @@ class Contenedor {
             ...data,
             id
         }
-        console.log("Este es el producto después de la actualización, ", producto);
+        console.log("This is the product after the update, ", producto);
         arrProductos.push(producto);
         try{
             await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
             return producto.id;
         }catch(error){
-            return "No se pudo actualizar el producto";
+            return "The product couldn't be updated";
         }
     }
 

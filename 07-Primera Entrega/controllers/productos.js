@@ -29,13 +29,23 @@ async function getProduct(req,res){
         })
     }
 
-
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
     const id = req.params.id;
+
+    let isIdExistent = await contenedor.lookUpId(id)
+
+    if(!isIdExistent){
+        return res.status(400).json({
+            error: `The product with id ${id} does not exist`
+        })
+    }
+
+
+
     const producto = await contenedor.getById(id);
     if(!producto){
         return res.status(400).json({
-            error: "Producto no encontrado!"
+            error: "Product not found!"
         })
     }
     return res.status(200).json({
@@ -77,10 +87,23 @@ async function updateProduct(req,res){
     }
 
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
+
+
+    let isIdExistent = await contenedor.lookUpId(req.params.id)
+
+    if(!isIdExistent){
+        return res.status(400).json({
+            error: `The product with id ${req.params.id} does not exist`
+        })
+    }
+
+
     const productId = await contenedor.updateById(req.params.id,req.body);
+
+
     if(!productId){
         return res.status(400).json({
-            error: "No se pudo actualizar el producto, porque no existe"
+            error: "The product couldn't be updated because it doesn't exist"
         })
     }
     return res.status(200).json({
@@ -98,12 +121,24 @@ async function deleteProduct(req,res){
         })
     }
 
-
     const contenedor = new Contenedor(path.join(__dirname,"..","data","productos.txt"));
+
+    let isIdExistent = await contenedor.lookUpId(req.params.id)
+
+    if(!isIdExistent){
+        return res.status(400).json({
+            error: `The product with id ${req.params.id} does not exist`
+        })
+    }
+
+
+
     const productId = contenedor.deleteById(req.params.id);
+
+
     if(!productId){
         return res.status(400).json({
-            error: "No se pudo eliminar el producto!"
+            error: "The product couldn't be deleted!"
         })
     }
     return res.status(200).json({
