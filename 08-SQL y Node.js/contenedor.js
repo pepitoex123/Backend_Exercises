@@ -1,88 +1,70 @@
 const fs = require("fs");
 const uuid = require("uuid");
+const knex = require("knex");
 
 
 class Contenedor {
-    constructor(nombreArchivo,opciones,table){
-        this.ruta = nombreArchivo;
+    constructor(opciones,table){
         this.id = uuid.v4();
-        this.knexModel = require("knex")(opciones)
+        this.knexModel = knex(opciones);
         this.table = table;
     }
 
     async getAll() {
         try{
-            const contenido = await fs.promises.readFile(this.ruta,"utf-8");
-            return JSON.parse(contenido);
+            this.knexModel.from(this.table).select("*")
+                .then((rows) => {
+                    let contenido = [];
+                    if(rows){
+                        for(let row of rows){
+                            contenido.push(row);
+                        }
+                        return contenido;
+                    }
+                    return contenido;
+                })
+                .catch((err) => {
+                    console.log(err);
+                    throw err
+                })
         }catch(error){
-            await fs.promises.writeFile(this.ruta,JSON.stringify([],null,2));
-            const contenido = await fs.promises.readFile(this.ruta,"utf-8");
-            return JSON.parse(contenido);
+            console.log(error);
         }
     }
 
     async save(product) {
-        const arrProductos = await this.getAll();
         product.id = this.id;
-        this.id = this.id + "1";
-        arrProductos.push(product);
-        try{
-            await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
-            return product.id;
-        }catch(error){
-            return "No se pudo guardar el producto";
-        }
+        this.knexModel(this.table).insert(product,"id")
+            .then((result) => result.id)
+            .catch((err) => {
+                console.log(err)
+                throw err
+            })
     }
 
     async getById(id) {
-        const arrProductos = await this.getAll();
 
-        console.log("El array de productos es ", arrProductos)
-
-        const productoBuscado = arrProductos.find( p => p.id == id );
-
-        console.log("El producto buscado es ", productoBuscado)
-
-        return productoBuscado;
+        this.knexModel.from(this.table).select("*").where({
+            id
+        })
+            .then((result) => {
+                return result
+            })
+            .catch((err) => {
+                console.log(err);
+                throw err;
+            })
     }
 
     async updateById(id,data){
-        let producto = await this.getById(id);
-        console.log("Este es el producto: ",producto)
-        console.log("Este es el id", id)
-        await this.deleteById(id);
-        const arrProductos = await this.getAll();
-        producto = {
-            ...producto,
-            ...data,
-            id
-        }
-        console.log("Este es el producto después de la actualización, ", producto);
-        arrProductos.push(producto);
-        try{
-            await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2))
-            return producto.id;
-        }catch(error){
-            return "No se pudo actualizar el producto";
-        }
+        this.knexModel(this.table).where({id}).update(data)
+            .then(() => console.log("Item updated"))
+            .catch((err) => console.log(err))
     }
 
-    async deleteAll(){
-        try{
-            return await fs.promises.writeFile(this.ruta,JSON.stringify([],null,2));
-        }catch(error){
-            return "error";
-        }
-    }
 
     async deleteById(id){
-        let arrProductos = await this.getAll();
-        arrProductos = arrProductos.filter((producto) => producto.id !== id)
-        try{
-            return await fs.promises.writeFile(this.ruta,JSON.stringify(arrProductos,null,2));
-        }catch(error){
-            return "error";
-        }
+        this.knexModel.from(this.table).where({id}).del()
     }
 
 }

@@ -4,15 +4,25 @@ const handlebars = require("express-handlebars");
 const {Server: HttpServer} = require("http");
 const {Server: IOServer} = require("socket.io");
 const path = require("path");
-const optionsMariaDb = require("./ecommerce/configDbOptionsMariaDb");
+
+
+const mariaDBOptions = require("./ecommerce/configDbOptionsMariaDb");
+const sqlite3Options = require("./ecommerce/configDbOptionsSqlLite");
+
+
+const mariaDB = require("./sqlscript/createSchemaKnexMariaDb");
+const sqlite3 = require("./sqlscript/createSchemaKnexSqlLite");
 
 
 const productsRouter = require("./routes/productos");
 
 const viewsRouter = require("./routes/publicRendering");
 
+// Creating tables
 
+mariaDB()
 
+sqlite3()
 
 
 const app = express();
@@ -51,8 +61,8 @@ httpServer.listen(3000,() => console.log(`Server on port 3000...`))
 
 io.on("connection",async(socket) => {
     console.log("Usuario Conectado");
-    const contenedor = new Contenedor(path.join(__dirname,"data","productos.txt"));
-    const contenedorMensajes = new Contenedor(path.join(__dirname,"data","mensajes.txt"))
+    const contenedor = new Contenedor(mariaDBOptions,"productos");
+    const contenedorMensajes = new Contenedor(sqlite3Options,"mensajes");
     const productos = await contenedor.getAll();
     const mensajes = await contenedorMensajes.getAll();
     socket.emit("mi mensaje","Este es mi mensaje desde el servidor")
@@ -63,16 +73,14 @@ io.on("connection",async(socket) => {
     })
     socket.on("producto", async (producto) => {
         // io.sockets.emit
-        const contenedor = new Contenedor(path.join(__dirname,"data","productos.txt"));
-        const productoAGuardar = JSON.parse(producto);
-        await contenedor.save(productoAGuardar);
+        const contenedor = new Contenedor(mariaDBOptions,"productos");
+        await contenedor.save(producto);
         const productos = await contenedor.getAll();
         io.sockets.emit("productos",productos);
     })
     socket.on("mensaje", async (mensaje) => {
-        const contenedor = new Contenedor(path.join(__dirname,"data","mensajes.txt"));
-        const mensajeAGuardar = JSON.parse(mensaje);
-        await contenedor.save(mensajeAGuardar);
+        const contenedor = new Contenedor(sqlite3Options,"mensajes");
+        await contenedor.save(mensaje);
         const mensajes = await contenedor.getAll();
         io.sockets.emit("mensajes",mensajes);
     })

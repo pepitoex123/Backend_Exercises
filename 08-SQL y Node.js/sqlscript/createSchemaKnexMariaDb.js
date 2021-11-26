@@ -1,18 +1,27 @@
+const options = require("./../ecommerce/configDbOptionsMariaDb")
+const knex = require("knex")(options);
 
 
+function createSchemaKnexMariaDb(){
 
-function createSchemaKnexMariaDb(knex){
-    knex.schema.createTable("productos", table => {
-        table.increments("id")
-        table.string("title")
-        table.integer("price")
-        table.string("thumbnail")
+
+    knex.schema.hasTable("productos").then(function(exists){
+        if(!exists){
+            knex.schema.createTable("productos", table => {
+                table.increments("id")
+                table.string("title")
+                table.integer("price")
+                table.string("thumbnail")
+            })
+                .then(() => console.log("Table created!"))
+                .catch((err) => console.log("An error took place: ",err))
+                .finally(() => {
+                    knex.destroy()
+                })
+        }
     })
-        .then(() => console.log("Table created!"))
-        .catch((err) => console.log("An error took place: ",err))
-        .finally(() => {
-            knex.destroy()
-        })
+
+
 }
 
 
