@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Boka-Nuka123",
+    "price": 2000,
+    "productos": [],
+    "id": "36bed1ae-aa73-4259-856d-246858cc7ae2",
+    "timestamp": 1637859536063
+  }
+]
